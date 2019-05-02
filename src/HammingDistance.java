@@ -18,13 +18,10 @@ public class HammingDistance
 	int countDistance3 = 0;
 	int countDistance4 = 0;
 	
-	public HammingDistance(String StID)
-	{
-		this.StID = StID;
-	}
+	
 	
 	//We may need to pass the selected StID
-	public void getHammingDistance() throws IOException
+	public void getHammingDistance(String selected) throws IOException
 	{
 		
 		//We need a buffered reader to read into the Mesonet.txt
@@ -39,9 +36,9 @@ public class HammingDistance
 		{
 			//We need to read not the whole line but the 4 characters which are the StIDs
 			count = 0;
-			for(int i = 0; i < StID.length(); i++)
+			for(int i = 0; i < selected.length(); i++)
 			{
-				if(StID.charAt(i) != line.charAt(i))
+				if(selected.charAt(i) != line.charAt(i))
 				{
 					count++;
 				}
@@ -84,36 +81,45 @@ public class HammingDistance
 		br.close();
 	}
 	
-	
-	
-	public void printSomething()
+	public int getDistance1()
 	{
-		System.out.println(distance4.toString());
-		
-		System.out.println("Distance 1: " + countDistance1);
-		for (int i = 0; i < distance1.size(); i++) 
-		{
-		    System.out.println(distance1.get(i));		    
-		}
-		
-		System.out.println("Distance 2: " + countDistance2);
-		for (int i = 0; i < distance1.size(); i++) 
-		{
-		    System.out.println(distance2.get(i));		    
-		}
-		
-		System.out.println("Distance 3: " + countDistance3);
-		for (int i = 0; i < distance1.size(); i++) 
-		{
-		    System.out.println(distance3.get(i));		    
-		}
-		
-		System.out.println("Distance 4: " + countDistance4);
-		for (int i = 0; i < distance1.size(); i++) 
-		{
-		    System.out.println(distance4.get(i));		    
-		}
-		
+		return countDistance1;
 	}
+	
+	public int getDistance2()
+	{
+		return countDistance2;
+	}
+	
+	public int getDistance3()
+	{
+		return countDistance3;
+	}
+	
+	public int getDistance4()
+	{
+		return countDistance4;
+	}
+	
+	
+	public ArrayList<String> printDistance1()
+	{
+		return distance1;
+	}
+	
+	public ArrayList<String> printDistance2()
+	{
+		return distance2;
+	}
+	
+	public ArrayList<String> printDistance3()
+	{
+		return distance3;
+	}
+	public ArrayList<String> printDistance4()
+	{
+		return distance4;
+	}
+	
 	
 }
