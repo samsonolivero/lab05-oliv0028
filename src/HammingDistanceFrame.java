@@ -141,35 +141,20 @@ public class HammingDistanceFrame extends JFrame
 	
 	HammingDistancePanel hdPanel = new HammingDistancePanel();
 	
-	//The Whole Panel
-	//JPanel panel0 = new JPanel(new GridLayout(0, 2));
-	
+
+	//==================================================================================================================
+	// Panels for Project grouping and organization:
+	//==================================================================================================================
 	JPanel project = new JPanel(new GridLayout(6,1));
 	
 	JPanel enterDistance = new JPanel(new GridLayout(2, 1));
-	//JPanel sliderPanel = new JPanel();
+	
 	JPanel stations = new JPanel(new GridLayout(2,1));
-	//JPanel displayStations = new JPanel(new GridLayout(1,1));
+	
 	JPanel comparison = new JPanel(new GridLayout(0, 2));
 	JPanel distances = new JPanel(new GridLayout(7,  2));
 	
-	//JPanel addStationPanel = new JPanel(new GridLayout(0, 2));
 	
-	JPanel freeSpace = new JPanel(new GridLayout(3,0));
-	
-	
-	
-	
-		
-	//==================================================================================================================
-	// Panels for component grouping and organization:
-	//==================================================================================================================
-
-	/** panel to hold the non-GraphicalCalculatorPanel panels */
-	// JPanel panel0 = new JPanel(new GridLayout(2, 2));
-	/** panel for operand text entry */
-	// JPanel panel1 = new JPanel();
-	/** panel for the radio buttons */
 	
 	
 	JSlider hamDistance = new JSlider(JSlider.HORIZONTAL, 1, 4, 2);
@@ -213,6 +198,16 @@ public class HammingDistanceFrame extends JFrame
 	JLabel dist4 = new JLabel("Distance 4");
 	
 	
+	//==================================================================================================================
+	// Panels for FreeSpace grouping and organization:
+	//==================================================================================================================
+	JPanel freeSpace = new JPanel(new GridLayout(3,0));
+	
+	
+	
+	
+	
+	
 	public HammingDistanceFrame() 
 	{
         super("HammingDistanceFrame");
@@ -220,6 +215,7 @@ public class HammingDistanceFrame extends JFrame
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setLayout(new GridLayout(0,2));
         
+        //initializes the array for us
         try 
         {
 			this.initializeDataList();
@@ -271,6 +267,7 @@ public class HammingDistanceFrame extends JFrame
         textArea.setEditable(false);
         stations.add(sp);
         
+        //Gives the list of stations depending on the hamming distance
         showStation.addActionListener((e) ->
         {
         	textArea.setText("");
@@ -329,7 +326,8 @@ public class HammingDistanceFrame extends JFrame
         
         project.add(stations);
         
-        //TODO Add DropBox
+        
+        //Comparison Panel
         comparison.add(compareWith);
         
         
@@ -393,31 +391,29 @@ public class HammingDistanceFrame extends JFrame
         	{
 				e1.printStackTrace();
 			}
-        	
-     
-        	
-        			
-        
-        	
+
         }
         );
        
         
-        //TODO Set Default Station
-        /*
-		datalist.add(newData);
-		int select = datalist.size() - 1;
-		*/
+        //Provides the AddStation Button A Function
+
         distances.add(addStation);
         distances.add(currStation);  
         addStation.addActionListener((e) ->
         {
         	String newStID;
         	
+        	//Ensures that the current station has a length of four
         	if(currStation.getText().length() == 4)
         	{
+        		//all StIDs are uppercased
         		newStID = currStation.getText().toUpperCase();
         		boolean noRepeat = true;
+        		int select;
+        		
+        		
+        		//For Loop that checks to see if the StID is already in the arraylist
             	for(int i = 0; i < datalist.size(); i++)
             	{
             		if(newStID.equalsIgnoreCase(datalist.get(i)))
@@ -426,7 +422,8 @@ public class HammingDistanceFrame extends JFrame
             		}
             	}
             	
-            	int select;
+            	
+            	//If no repeats, adds the StID and then sorts the arraylist
             	if(noRepeat)
             	{
             		datalist.add(newStID.toUpperCase());
@@ -434,18 +431,12 @@ public class HammingDistanceFrame extends JFrame
             		select = Collections.binarySearch(datalist, newStID);
             		
             	}
+            	
+            	//else, brings the user to the StID they wanted
             	else
             	{
             		select = Collections.binarySearch(datalist, newStID);
             	}
-            	
-            		
-            	
-            	
-            	
-            	
-            	
-            	
             	
     			DefaultComboBoxModel<String> newComboBoxModel;
     			try {
@@ -460,6 +451,7 @@ public class HammingDistanceFrame extends JFrame
     			}
     			
         	}
+        	//If there is anything wrong, the button will prompt the user
         	else
         	{
         		currStation.setText("ERROR TRY AGAIN");
@@ -472,15 +464,15 @@ public class HammingDistanceFrame extends JFrame
         });
         
         project.add(distances);
+        //Done With the Project Portion, onto the "free space"
         
-       
-        //adds the two panels to the jframe
         
-       
+        
+        //Adds the Two Panels
         this.add(hdPanel);
         
         
-        
+        //Vital Two Lines of Code
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         
