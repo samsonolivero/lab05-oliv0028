@@ -1,25 +1,22 @@
-import java.awt.BorderLayout;
+//@author Samson Olivero
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -27,21 +24,24 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import java.awt.font.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 
 @SuppressWarnings("serial")
@@ -139,6 +139,101 @@ public class HammingDistanceFrame extends JFrame
 		public void mouseExited(MouseEvent e) {}
 	}
 	
+	
+	//==================================================================================================================
+	// TicTacToe Game: This was not created by me, but I adjust the code so it would work with my own code
+	// @author: http://courses.washington.edu/css161/nash/slides/games/gamePak/gamePak/src/TicTacToe.java
+	//==================================================================================================================
+	public static int xOrO =  0; // used for counting
+	private static int[][] winCombinations = new int[][] 
+			{
+				
+					{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, //horizontal wins
+					{0, 3, 6}, {1, 4, 7}, {2, 5, 8}, //vertical wins
+					{0, 4, 8}, {2, 4, 6}			 //diagonal wins
+			};
+			
+	private static JButton buttons[] = new JButton[9]; //create 9 buttons
+			
+	private static class MyButton extends JButton implements ActionListener 
+	{//creating own button class because JButton sucks:)
+		
+		int again = 1000;//set again at 1000 so we don't make the mistake we can play again
+		boolean win = false; // there is not a win
+		String letter; // x or o
+		public MyButton() 
+		{	// creating blank board
+			super();
+			letter = " ";
+			setFont(new Font("Dialog", 1, 60));
+			setText(letter);
+			addActionListener(this);
+		}
+		public void actionPerformed(ActionEvent e) 
+		{ // placing x or o's
+			if((xOrO%2) == 0 && getText().equals(" ") && win == false)
+			{
+				letter = "X";
+				xOrO = xOrO+1;
+				System.out.println(letter + "\n"+xOrO);
+			} 
+			else if((xOrO%2) == 1 && getText().equals(" ") && win == false) 
+			{
+				letter = "O";
+				xOrO = xOrO+1;
+				System.out.println(letter + "\n" + xOrO);
+			} // if user does click on a button that is already played, nothing will happen
+			
+			setText(letter); // place the x or the o on the actual board
+
+			
+			for(int i = 0; i <= 7; i++)
+			{ // check for the winning combinations
+				if( buttons[winCombinations[i][0]].getText().equals(buttons[winCombinations[i][1]].getText()) && 
+					buttons[winCombinations[i][1]].getText().equals(buttons[winCombinations[i][2]].getText()) && 
+					buttons[winCombinations[i][0]].getText() != " "){//the winning is true
+					win = true;
+				}
+			}
+			
+			if(win == true)
+			{ // if the game ends let the user know who wins and give option to play again
+				again = JOptionPane.showConfirmDialog(null, letter + " wins the game!  Do you want to play again?",letter + "won!",JOptionPane.YES_NO_OPTION);
+				
+			} else if(xOrO == 9 && win == false){//tie game, announce and ask if the user want to play again
+				again=JOptionPane.showConfirmDialog(null, "The game was tie!  Do you want to play again?","Tie game!",JOptionPane.YES_NO_OPTION);
+				win=true;
+			}	
+			
+			if(again == JOptionPane.YES_OPTION && win == true)
+			{ // if the user want to play again clear all the button and start over
+					clearButtons();			
+					win=false;
+			}
+			else if(again == JOptionPane.NO_OPTION)
+			{
+				clearButtons(); // exit game if the user do not want to play again
+			}
+
+		}
+
+	}
+	
+	public static void clearButtons()
+	{
+		
+		for(int i = 0; i <= 8; i++)
+		{// clear all 8 buttons
+			buttons[i].setText(" ");						
+		}
+		xOrO = 0; // reset the count
+		
+	}
+	
+	//==================================================================================================================
+	// Start of Main Project
+	//==================================================================================================================
+	
 	HammingDistancePanel hdPanel = new HammingDistancePanel();
 	
 
@@ -153,8 +248,6 @@ public class HammingDistanceFrame extends JFrame
 	
 	JPanel comparison = new JPanel(new GridLayout(0, 2));
 	JPanel distances = new JPanel(new GridLayout(7,  2));
-	
-	
 	
 	
 	JSlider hamDistance = new JSlider(JSlider.HORIZONTAL, 1, 4, 2);
@@ -201,9 +294,8 @@ public class HammingDistanceFrame extends JFrame
 	//==================================================================================================================
 	// Panels for FreeSpace grouping and organization:
 	//==================================================================================================================
-	JPanel freeSpace = new JPanel(new GridLayout(3,0));
-	
-	
+	JPanel freeSpace = new JPanel();
+
 	
 	
 	
@@ -316,7 +408,8 @@ public class HammingDistanceFrame extends JFrame
 				}
 				
 				
-			} catch (IOException e1) 
+			} 
+        	catch (IOException e1) 
         	{
 				e1.printStackTrace();
 			}
@@ -462,13 +555,27 @@ public class HammingDistanceFrame extends JFrame
         	
         	
         });
-        
         project.add(distances);
-        //Done With the Project Portion, onto the "free space"
         
-        
-        
+        //==================================================================================================================
+        // FreeSpace Adjustments
+    	//==================================================================================================================
+        freeSpace.setLayout(new GridLayout (3, 3));
+		freeSpace.setBorder(BorderFactory.createLineBorder(Color.gray, 3));
+		freeSpace.setBackground(Color.white);
+
+		for(int i=0; i<=8; i++)
+		{ //placing the button onto the board
+			buttons[i] = new MyButton();
+			freeSpace.add(buttons[i]);			
+		}
+
+		
+		this.pack();
+
+		
         //Adds the Two Panels
+		hdPanel.add(freeSpace);
         this.add(hdPanel);
         
         
