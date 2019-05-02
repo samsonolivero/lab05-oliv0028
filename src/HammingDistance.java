@@ -1,22 +1,29 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 //Finds the HammingDistance between the selected node and compares to the rest
 public class HammingDistance 
 {
 	private String StID;
-	HashMap<String, Integer> distance1 = new HashMap<String, Integer>();
-	HashMap<String, Integer> distance2 = new HashMap<String, Integer>();
-	HashMap<String, Integer> distance3 = new HashMap<String, Integer>();
-	HashMap<String, Integer> distance4 = new HashMap<String, Integer>();
+	ArrayList<String> distance1 = new ArrayList<String>();
+	ArrayList<String> distance2 = new ArrayList<String>();
+	ArrayList<String> distance3 = new ArrayList<String>();
+	ArrayList<String> distance4 = new ArrayList<String>();
+	
+	int countDistance1 = 0;
+	int countDistance2 = 0;
+	int countDistance3 = 0;
+	int countDistance4 = 0;
 	
 	public HammingDistance(String StID)
 	{
 		this.StID = StID;
 	}
 	
+	//We may need to pass the selected StID
 	public void getHammingDistance() throws IOException
 	{
 		
@@ -45,16 +52,20 @@ public class HammingDistance
 			switch(count)
 			{
 				case 1:
-					distance1.put(line, count);
+					distance1.add(line);
+					countDistance1++;
 					break;
 				case 2:
-					distance2.put(line, count);
+					distance2.add(line);
+					countDistance2++;
 					break;
 				case 3:
-					distance3.put(line, count);
+					distance3.add(line);
+					countDistance3++;
 					break;
 				case 4:
-					distance4.put(line, count);
+					distance4.add(line);
+					countDistance4++;
 					break;
 			}
 			
@@ -64,35 +75,45 @@ public class HammingDistance
 		
 		}      
 		
+		Collections.sort(distance1);
+		Collections.sort(distance2);
+		Collections.sort(distance3);
+		Collections.sort(distance4);
+
 		
 		br.close();
 	}
 	
 	
-	/*
+	
 	public void printSomething()
 	{
 		System.out.println(distance4.toString());
-		for (String stid : distance1.keySet()) 
+		
+		System.out.println("Distance 1: " + countDistance1);
+		for (int i = 0; i < distance1.size(); i++) 
 		{
-		    System.out.println(stid + " " + distance1.get(stid));		    
+		    System.out.println(distance1.get(i));		    
 		}
 		
-		for (String stid : distance1.keySet()) 
+		System.out.println("Distance 2: " + countDistance2);
+		for (int i = 0; i < distance1.size(); i++) 
 		{
-		    System.out.println(stid + " " + distance2.get(stid));		    
+		    System.out.println(distance2.get(i));		    
 		}
 		
-		for (String stid : distance1.keySet()) 
+		System.out.println("Distance 3: " + countDistance3);
+		for (int i = 0; i < distance1.size(); i++) 
 		{
-		    System.out.println(stid + " " + distance3.get(stid));		    
+		    System.out.println(distance3.get(i));		    
 		}
 		
-		for (String stid : distance1.keySet()) 
+		System.out.println("Distance 4: " + countDistance4);
+		for (int i = 0; i < distance1.size(); i++) 
 		{
-		    System.out.println(stid + " " + distance4.get(stid));		    
+		    System.out.println(distance4.get(i));		    
 		}
 		
 	}
-	*/
+	
 }

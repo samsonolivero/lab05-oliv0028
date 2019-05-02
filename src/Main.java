@@ -7,6 +7,6 @@ public class Main
 		//This will be the input for the main class
 		HammingDistance ham = new HammingDistance("ACME");
 		ham.getHammingDistance();
-		//ham.printSomething();
+		ham.printSomething();
 	}
 }
